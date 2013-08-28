@@ -1,4 +1,4 @@
-void myfn(int x, int y,) {
+void myfn(int x, int y) {
     return 55;
 }
 

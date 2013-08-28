@@ -1,8 +1,11 @@
 function_defs -> function_def function_defs
                  | <epsilon>
 function_def -> type id ( arg_list ) { stmt_list }
-arg_list -> type id , arg_list
+args_list -> args_list_item args_list_cont
            | <epsilon>
+args_list_cont -> , args_list_item args_list_cont
+               | <epsilon>
+args_list_item -> type id
 stmt_list -> stmt ; stmt_list
              | <epsilon>
 stmt -> return literal

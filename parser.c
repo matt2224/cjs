@@ -68,15 +68,27 @@ void parser_stmt_list() {
     }
 }
 
-void parser_arg_list() {
-    if (lookahead == TYPE) {
-        parser_match(TYPE);
-        parser_emit("%s", token_value_str);
-        parser_match(ID);
+void parser_args_list_item() {
+    parser_match(TYPE);
+    parser_emit("%s", token_value_str);
+    parser_match(ID);
+}
+
+void parser_args_list_cont() {
+    if (lookahead == COMMA) {
         parser_emit(",");
         parser_match(COMMA);
+        parser_args_list_item();
+        parser_args_list_cont();
+    } else {
+        // epsilon
+    }
+}
 
-        parser_arg_list();
+void parser_args_list() {
+    if (lookahead == TYPE) {
+        parser_args_list_item();
+        parser_args_list_cont();
     } else {
         // epsilon
     }
@@ -88,7 +100,7 @@ void parser_function_def() {
     parser_emit("function %s(", token_value_str);
     parser_match(ID);
     parser_match(L_PAREN);
-    parser_arg_list();
+    parser_args_list();
     parser_emit("){");
     parser_match(R_PAREN);
     parser_match(L_BRACE);
