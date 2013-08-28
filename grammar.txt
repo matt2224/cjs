@@ -1,0 +1,12 @@
+function_defs -> function_def function_defs
+                 | <epsilon>
+function_def -> type id ( arg_list ) { stmt_list }
+arg_list -> type id , arg_list
+           | <epsilon>
+stmt_list -> stmt ; stmt_list
+             | <epsilon>
+stmt -> return literal
+      | type id = literal
+literal -> num
+        | string
+type -> int | char | void

@@ -1,0 +1,10 @@
+void myfn(int x, int y,) {
+    return 55;
+}
+
+int main() {
+    int x = 5;
+    char y = "Helloo";
+
+    return "Hello, world!";
+}
