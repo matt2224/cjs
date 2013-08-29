@@ -1,1 +1,1 @@
-MONDAY=0;TUESDAY=1;WEDNESDAY=2;THURSDAY=3;FRIDAY=4;SATURDAY=5;SUNDAY=6;function myfn(x,y){return 55;}function main(){x=5;y="Helloo";return "Hello, world!";}main();
+MONDAY=0;TUESDAY=1;WEDNESDAY=2;THURSDAY=3;FRIDAY=4;SATURDAY=5;SUNDAY=6;function myfn(x,y){return 55;}function main(){x=5;y="Helloo";myfn(100,47);return "Hello, world!";}main();

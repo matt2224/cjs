@@ -16,5 +16,6 @@ int main() {
     int x = 5;
     char y = "Helloo";
 
+    myfn(100, 47);
     return "Hello, world!";
 }

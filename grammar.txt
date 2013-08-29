@@ -6,15 +6,21 @@ enum_list_item -> id
 enum_list_cont -> , enum_list_item enum_list_cont
                | <epsilon>
 function_def -> type id ( arg_list ) { stmt_list }
-args_list -> args_list_item args_list_cont
+param_list -> param_list_item param_list_cont
            | <epsilon>
-args_list_cont -> , args_list_item args_list_cont
+param_list_cont -> , param_list_item param_list_cont
                | <epsilon>
-args_list_item -> type id
+param_list_item -> type id
 stmt_list -> stmt ; stmt_list
              | <epsilon>
 stmt -> return literal
       | type id = literal
+      | id ( arg_list )
+arg_list -> arg_list_item arg_list_cont
+           | <epsilon>
+arg_list_cont -> , arg_list_item arg_list_cont
+               | <epsilon>
+arg_list_item -> literal  
 literal -> num
         | string
 type -> int | char | void

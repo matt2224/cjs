@@ -14,7 +14,6 @@ parser_error() {
 }
 
 void parser_match(token expected) {
-
     if (lookahead != expected) {
         parser_error();
     } else if (lookahead != EOF) {
@@ -40,6 +39,31 @@ void parser_literal() {
     }
 }
 
+void parser_arg_list_item() {
+    parser_literal();
+}
+
+void parser_arg_list_cont() {
+    if (lookahead == COMMA) {
+        parser_emit(",");   
+        parser_match(COMMA);
+        parser_arg_list_item();
+        parser_arg_list_cont();
+    } else {
+        // epsilon
+    }
+}
+
+void parser_arg_list() {
+    if (lookahead == NUM || 
+        lookahead == STRING) {
+        parser_arg_list_item();
+        parser_arg_list_cont();
+    } else {
+        // epsilon
+    }
+}
+
 void parser_stmt() {
     if (lookahead == RETURN) {
         parser_match(RETURN);
@@ -51,6 +75,13 @@ void parser_stmt() {
         parser_match(ID);
         parser_match(EQUALS);
         parser_literal();
+    } else if (lookahead == ID) { 
+        parser_emit("%s(", token_value_str);
+        parser_match(ID);
+        parser_match(L_PAREN);
+        parser_arg_list();
+        parser_emit(")");
+        parser_match(R_PAREN);
     } else {
         parser_error();
     }
@@ -58,7 +89,8 @@ void parser_stmt() {
 
 void parser_stmt_list() {
     if (lookahead == RETURN ||
-        lookahead == TYPE) {
+        lookahead == TYPE ||
+        lookahead == ID) {
         parser_stmt();
         parser_emit(";");
         parser_match(SEMICOLON);
@@ -68,27 +100,27 @@ void parser_stmt_list() {
     }
 }
 
-void parser_args_list_item() {
+void parser_param_list_item() {
     parser_match(TYPE);
     parser_emit("%s", token_value_str);
     parser_match(ID);
 }
 
-void parser_args_list_cont() {
+void parser_param_list_cont() {
     if (lookahead == COMMA) {
         parser_emit(",");
         parser_match(COMMA);
-        parser_args_list_item();
-        parser_args_list_cont();
+        parser_param_list_item();
+        parser_param_list_cont();
     } else {
         // epsilon
     }
 }
 
-void parser_args_list() {
+void parser_param_list() {
     if (lookahead == TYPE) {
-        parser_args_list_item();
-        parser_args_list_cont();
+        parser_param_list_item();
+        parser_param_list_cont();
     } else {
         // epsilon
     }
@@ -100,7 +132,7 @@ void parser_function_def() {
     parser_emit("function %s(", token_value_str);
     parser_match(ID);
     parser_match(L_PAREN);
-    parser_args_list();
+    parser_param_list();
     parser_emit("){");
     parser_match(R_PAREN);
     parser_match(L_BRACE);
