@@ -13,14 +13,30 @@ param_list_cont -> , param_list_item param_list_cont
 param_list_item -> type id
 stmt_list -> stmt ; stmt_list
              | <epsilon>
-stmt -> return literal
-      | type id = literal
-      | id ( arg_list )
+stmt -> return expr
+      | type id var_dec_cont
+      | expr
+var_dec_cont -> = expr
+              | [ num ]
+              | <epsilon>
 arg_list -> arg_list_item arg_list_cont
            | <epsilon>
 arg_list_cont -> , arg_list_item arg_list_cont
                | <epsilon>
-arg_list_item -> literal  
-literal -> num
+arg_list_item -> expr  
+array_init_list -> array_init_list_item array_init_list_cont
+array_init_list_item -> expr
+array_init_list_cont -> , array_init_list_item array_init_list_cont
+                      | <epsilon>
+expr -> num
         | string
+        | { array_init_list }
+        | -- id
+        | ++ id
+        | id id_expr_cont
+id_expr_cont -> ( arg_list )
+              | ++
+              | --
+              | [ expr ]  
+              | epsilon
 type -> int | char | void

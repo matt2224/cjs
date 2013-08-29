@@ -56,7 +56,11 @@ token lexer_next(char *out_token_value_str, int *out_token_value_num) {
                     case '(': return L_PAREN; 
                     case '}': return R_BRACE;
                     case '{': return L_BRACE; 
+                    case '[': return L_BRACKET;
+                    case ']': return R_BRACKET;  
                     case ',': return COMMA;
+                    case '+': return PLUS;
+                    case '-': return MINUS;
                     case '=': return EQUALS;
                     case EOF_MARKER: return EOF;
                     default: if (isalpha(c)) { state = 1; }

@@ -9,13 +9,14 @@ enum {
 }
 
 void myfn(int x, int y) {
-    return 55;
+    return --y;
 }
 
 int main() {
-    int x = 5;
+    int z;
+    int x[5];
     char y = "Helloo";
 
     myfn(100, 47);
-    return "Hello, world!";
+    return myfn({100, 1}, 99);
 }
