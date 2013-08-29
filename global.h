@@ -16,6 +16,13 @@ typedef enum {
     R_BRACKET,
     L_PAREN,
     R_PAREN,
+    FOR,
+    WHILE,
+    GT,
+    LT,
+    GTE,
+    LTE,
+    DO,
     EOF
 } token;
 

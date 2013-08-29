@@ -8,15 +8,19 @@ enum {
     SUNDAY
 }
 
-void myfn(int x, int y) {
+void myfn(int x[], int y) {
     return --y;
 }
 
 int main() {
-    int z;
+    int z = 0;
     int x[5];
     char y = "Helloo";
 
+    while (z <= 100) {
+        z++;
+    };
+
     myfn(100, 47);
-    return myfn({100, 1}, 99);
+    return myfn({100, 1}, z);
 }

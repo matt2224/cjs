@@ -1,1 +1,1 @@
-MONDAY=0;TUESDAY=1;WEDNESDAY=2;THURSDAY=3;FRIDAY=4;SATURDAY=5;SUNDAY=6;function myfn(x,y){return --y;}function main(){var z;var x=new Array(5);var y="Helloo";myfn(100,47);return myfn([100,1],99);}main();
+MONDAY=0;TUESDAY=1;WEDNESDAY=2;THURSDAY=3;FRIDAY=4;SATURDAY=5;SUNDAY=6;function myfn(x,y){return --y;}function main(){var z=0;var x=new Array(5);var y="Helloo";while(z<=100){z++;};myfn(100,47);return myfn([100,1],z);}main();

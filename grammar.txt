@@ -10,12 +10,17 @@ param_list -> param_list_item param_list_cont
            | <epsilon>
 param_list_cont -> , param_list_item param_list_cont
                | <epsilon>
-param_list_item -> type id
+param_list_item -> type id param_list_item_cont
+param_list_item_cont -> []
+                     | <epsilon>
 stmt_list -> stmt ; stmt_list
              | <epsilon>
 stmt -> return expr
       | type id var_dec_cont
       | expr
+      | for (expr ; expr ; expr)
+      | while ( expr ) { stmt_list }
+      | do { stmt_list } while ( expr )
 var_dec_cont -> = expr
               | [ num ]
               | <epsilon>
@@ -23,12 +28,19 @@ arg_list -> arg_list_item arg_list_cont
            | <epsilon>
 arg_list_cont -> , arg_list_item arg_list_cont
                | <epsilon>
-arg_list_item -> expr  
+arg_list_item -> expr
 array_init_list -> array_init_list_item array_init_list_cont
 array_init_list_item -> expr
 array_init_list_cont -> , array_init_list_item array_init_list_cont
                       | <epsilon>
-expr -> num
+expr -> expr_part expr_cont
+expr_cont -> == expr_part
+           | > expr_part
+           | < expr_part
+           | >= expr_part
+           | <= expr_part
+           | <epsilon>
+expr_part -> num
         | string
         | { array_init_list }
         | -- id

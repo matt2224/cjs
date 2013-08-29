@@ -62,6 +62,8 @@ token lexer_next(char *out_token_value_str, int *out_token_value_num) {
                     case '+': return PLUS;
                     case '-': return MINUS;
                     case '=': return EQUALS;
+                    case '<': state = 4; break;
+                    case '>': state = 5; break;
                     case EOF_MARKER: return EOF;
                     default: if (isalpha(c)) { state = 1; }
                              else if (isdigit(c)) { state = 2; }
@@ -105,6 +107,20 @@ token lexer_next(char *out_token_value_str, int *out_token_value_num) {
                 strncpy(out_token_value_str, buffer+lexeme_beginning+1, n);
                 out_token_value_str[n] = '\0';
                 return STRING;
+            } break;
+            case 4: if (c == '=') {
+                return LTE;
+            } else {
+                // retract forward pointer.
+                forward--;
+                return LT;
+            } break;
+            case 5: if (c == '=') {
+                return GTE;
+            } else {
+                // retract forward pointer.
+                forward--;
+                return GT;
             } break;
             default: lexer_error();
         }

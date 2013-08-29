@@ -9,6 +9,7 @@ char token_value_str[20] = "";
 int token_value_num = 0;
 
 void parser_expr();
+void parser_stmt_list();
 
 parser_error() {
     printf("Parser error\n");
@@ -75,12 +76,10 @@ void parser_id_expr_cont() {
         parser_emit("++");
         parser_match(PLUS);
         parser_match(PLUS);
-        parser_id();
     } else if (lookahead == MINUS) {
         parser_emit("--");
         parser_match(MINUS);
         parser_match(MINUS);
-        parser_id();
     } else if (lookahead == L_BRACKET) {
         parser_match(L_BRACKET);
         parser_emit("[");
@@ -117,7 +116,7 @@ void parser_array_init_list() {
     parser_array_init_list_cont();
 }
 
-void parser_expr() {
+void parser_expr_part() {
     if (lookahead == NUM) {
         parser_num();
     } else if (lookahead == STRING) {
@@ -143,6 +142,37 @@ void parser_expr() {
         parser_id();
         parser_id_expr_cont();
     }
+}
+
+void parser_expr_cont() {
+    if (lookahead == EQUALS) {
+        parser_match(EQUALS);
+        parser_emit("==");
+        parser_expr_part();
+    } else if (lookahead == LT) {
+        parser_match(LT);
+        parser_emit("<");
+        parser_expr_part();
+    } else if (lookahead == GT) {
+        parser_match(GT);
+        parser_emit(">");
+        parser_expr_part();
+    } else if (lookahead == LTE) {
+        parser_match(LTE);
+        parser_emit("<=");
+        parser_expr_part();
+    } else if (lookahead == GTE) {
+        parser_match(GTE);
+        parser_emit(">=");
+        parser_expr_part();
+    } else {
+        // epsilon
+    }
+}
+
+void parser_expr() {
+    parser_expr_part();
+    parser_expr_cont();
 }
 
 void parser_var_dec_cont() {
@@ -171,6 +201,17 @@ void parser_stmt() {
         parser_emit("var ");
         parser_id();
         parser_var_dec_cont();
+    } else if (lookahead == WHILE) {
+        parser_match(WHILE);
+        parser_emit("while(");
+        parser_match(L_PAREN);
+        parser_expr();
+        parser_match(R_PAREN);
+        parser_emit("){");
+        parser_match(L_BRACE);
+        parser_stmt_list();
+        parser_match(R_BRACE);
+        parser_emit("}");
     } else {
         parser_expr();
     }
@@ -184,7 +225,10 @@ void parser_stmt_list() {
         lookahead == NUM ||
         lookahead == PLUS ||
         lookahead == MINUS ||
-        lookahead == L_BRACE) {
+        lookahead == L_BRACE ||
+        lookahead == WHILE ||
+        lookahead == DO ||
+        lookahead == FOR) {
         parser_stmt();
         parser_emit(";");
         parser_match(SEMICOLON);
@@ -194,9 +238,19 @@ void parser_stmt_list() {
     }
 }
 
+void param_list_item_cont() {
+    if (lookahead == L_BRACKET) {
+        parser_match(L_BRACKET);
+        parser_match(R_BRACKET);
+    } else {
+        // epsilon
+    }
+}
+
 void parser_param_list_item() {
     parser_match(TYPE);
     parser_id();
+    param_list_item_cont();
 }
 
 void parser_param_list_cont() {
