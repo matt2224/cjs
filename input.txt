@@ -1,3 +1,13 @@
+enum {
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY
+}
+
 void myfn(int x, int y) {
     return 55;
 }

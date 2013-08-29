@@ -109,19 +109,47 @@ void parser_function_def() {
     parser_match(R_BRACE);
 }
 
-void parser_function_defs() {
-    if (lookahead == TYPE) {
-        parser_function_def();
-        parser_function_defs();
+void parser_enum_list_item() {
+    static enum_val_count = 0;
+    printf("%s=%d;", token_value_str, enum_val_count++);
+    parser_match(ID);
+}
+
+void parser_enum_list_cont() {
+    if (lookahead == COMMA) {
+        parser_match(COMMA);
+        parser_enum_list_item();
+        parser_enum_list_cont();
     } else {
         // epsilon
     }
 }
 
+void parser_enum_def() {
+    parser_match(ENUM);
+    parser_match(L_BRACE);
+    parser_enum_list_item();
+    parser_enum_list_cont();
+    parser_match(R_BRACE); 
+}
+
+void parser_root_defs() {
+    if (lookahead == TYPE) {
+        parser_function_def();
+    } else if (lookahead == ENUM) {
+        parser_enum_def();
+    } else {
+        // epsilon
+        return;
+    }
+
+    parser_root_defs();
+}
+
 void parser_start() {
     lookahead = lexer_next(token_value_str, &token_value_num);
 
-    parser_function_defs();
+    parser_root_defs();
     parser_emit("main();");
     parser_match(EOF);
 }

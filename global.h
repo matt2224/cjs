@@ -7,6 +7,7 @@ typedef enum {
     STRING,
     SEMICOLON,
     COMMA,
+    ENUM,
     L_BRACE,
     R_BRACE,
     L_PAREN,

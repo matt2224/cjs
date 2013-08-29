@@ -7,6 +7,7 @@ int main() {
     symtable_insert("void", TYPE, 0);   
     symtable_insert("char", TYPE, 0);    
     symtable_insert("return", RETURN, 0);
+    symtable_insert("enum", ENUM, 0);
 
     parser_start();
 
